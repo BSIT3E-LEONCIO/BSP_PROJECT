@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "Pewdiepie32J2";
+$pass = "";
 $db = "bsp_portal";
 
 $conn = new mysqli($host, $user, $pass, $db);

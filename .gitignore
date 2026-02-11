@@ -1,0 +1,32 @@
+# Node.js dependencies
+node_modules/
+
+# Lock files
+package-lock.json
+
+# Tailwind CLI output (if you use it)
+public/css/tailwind-output.css
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.env
+.env.local
+.env.*.local
+
+# Ignore DaisyUI and Tailwind build artifacts
+*.tmp
+*.log
+
+# Ignore build cache
+.cache/

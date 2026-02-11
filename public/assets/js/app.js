@@ -10,11 +10,12 @@ const storage = {
     } catch (error) {
       return fallback;
     }
-  }
+  },
 };
 
 const qs = (selector, scope = document) => scope.querySelector(selector);
-const qsa = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+const qsa = (selector, scope = document) =>
+  Array.from(scope.querySelectorAll(selector));
 
 const initSignup = () => {
   const form = qs("#signup-form");
@@ -41,7 +42,7 @@ const initStep1 = () => {
 
   // Disable sub-options that don't match the selected leader type
   function updateSubOptions(activeType) {
-    serveSubRadios.forEach(r => {
+    serveSubRadios.forEach((r) => {
       if (!activeType) {
         r.disabled = false;
       } else if (r.dataset.main !== activeType) {
@@ -54,30 +55,45 @@ const initStep1 = () => {
   }
 
   // When leader type radio is clicked, disable the other group's sub-options
-  serveMainRadios.forEach(radio => {
+  serveMainRadios.forEach((radio) => {
     radio.addEventListener("change", () => updateSubOptions(radio.value));
   });
 
   // When a sub-option is clicked, auto-select the matching leader type
-  serveSubRadios.forEach(radio => {
+  serveSubRadios.forEach((radio) => {
     radio.addEventListener("change", () => {
-      const matchingMain = serveMainRadios.find(r => r.value === radio.dataset.main);
+      const matchingMain = serveMainRadios.find(
+        (r) => r.value === radio.dataset.main,
+      );
       if (matchingMain) matchingMain.checked = true;
       updateSubOptions(radio.dataset.main);
     });
   });
 
   // On page load, set correct state
-  const initialMain = serveMainRadios.find(r => r.checked)?.value;
+  const initialMain = serveMainRadios.find((r) => r.checked)?.value;
   updateSubOptions(initialMain);
-
 
   if (form.dataset.clientOnly === "true") {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(form));
 
-      if (!data.surname || !data.firstname || !data.mi || !data.sex || !data.civil_status || !data.tenure || !data.sponsoring || !data.council || !data.dob || !data.pob || !data.religion || !data.profession || !data.position) {
+      if (
+        !data.surname ||
+        !data.firstname ||
+        !data.mi ||
+        !data.sex ||
+        !data.civil_status ||
+        !data.tenure ||
+        !data.sponsoring ||
+        !data.council ||
+        !data.dob ||
+        !data.pob ||
+        !data.religion ||
+        !data.profession ||
+        !data.position
+      ) {
         alert("Please complete all required fields.");
         return;
       }
@@ -105,7 +121,9 @@ const initStep1 = () => {
         serveMainInput.value = saved.serve_main;
       }
       if (saved.serve_sub && !saved.serve_main) {
-        const matching = serveSubRadios.find((radio) => radio.value === saved.serve_sub);
+        const matching = serveSubRadios.find(
+          (radio) => radio.value === saved.serve_sub,
+        );
         if (matching) setServeMainFromSub(matching);
       }
     }
@@ -114,12 +132,28 @@ const initStep1 = () => {
   if (form.dataset.clientOnly !== "true") {
     form.addEventListener("submit", (event) => {
       // Always set serve_main from checked serve_sub before validation
-      const checkedSub = Array.from(form.elements['serve_sub']).find(r => r.checked);
+      const checkedSub = Array.from(form.elements["serve_sub"]).find(
+        (r) => r.checked,
+      );
       if (checkedSub && serveMainInput) {
         serveMainInput.value = checkedSub.dataset.main || "";
       }
       const formData = new FormData(form);
-      if (!formData.get("surname") || !formData.get("firstname") || !formData.get("mi") || !formData.get("sex") || !formData.get("civil_status") || !formData.get("tenure") || !formData.get("sponsoring") || !formData.get("council") || !formData.get("dob") || !formData.get("pob") || !formData.get("religion") || !formData.get("profession") || !formData.get("position")) {
+      if (
+        !formData.get("surname") ||
+        !formData.get("firstname") ||
+        !formData.get("mi") ||
+        !formData.get("sex") ||
+        !formData.get("civil_status") ||
+        !formData.get("tenure") ||
+        !formData.get("sponsoring") ||
+        !formData.get("council") ||
+        !formData.get("dob") ||
+        !formData.get("pob") ||
+        !formData.get("religion") ||
+        !formData.get("profession") ||
+        !formData.get("position")
+      ) {
         alert("Please fill in all required fields.");
         event.preventDefault();
         return;
@@ -141,7 +175,7 @@ const initStep1 = () => {
         `Place of Birth: ${formData.get("pob") || ""}`,
         `Religion: ${formData.get("religion") || ""}`,
         `Profession: ${formData.get("profession") || ""}`,
-        `Position/Title: ${formData.get("position") || ""}`
+        `Position/Title: ${formData.get("position") || ""}`,
       ].join("\n");
 
       if (!window.confirm(`Please confirm your details:\n\n${summary}`)) {
@@ -201,7 +235,9 @@ const initWait = () => {
   if (!timer || !message || !loginBtn) return;
 
   const startAttr = timer.dataset.startMs;
-  const start = startAttr ? Number(startAttr) : storage.get("bsp_payment_time", Date.now());
+  const start = startAttr
+    ? Number(startAttr)
+    : storage.get("bsp_payment_time", Date.now());
   const total = 24 * 60 * 60 * 1000;
 
   const update = () => {
@@ -215,7 +251,8 @@ const initWait = () => {
     timer.textContent = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
     if (remaining === 0) {
-      message.textContent = "Verification window completed. You may now return to login.";
+      message.textContent =
+        "Verification window completed. You may now return to login.";
       loginBtn.disabled = false;
       clearInterval(interval);
     }
@@ -236,7 +273,9 @@ const initLogin = () => {
 
   loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    alert("Login is a UI-only prototype. Connect to the database to enable authentication.");
+    alert(
+      "Login is a UI-only prototype. Connect to the database to enable authentication.",
+    );
   });
 };
 

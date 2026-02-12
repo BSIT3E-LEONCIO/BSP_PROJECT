@@ -29,6 +29,12 @@ $error = $_GET["error"] ?? "";
       </div>
 
       <form id="signup-form" method="post" action="signup_process.php" class="space-y-6">
+        <?php if ($error === "exists") : ?>
+          <div class="alert alert-error shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+            <div class="text-sm">Account already exists.</div>
+          </div>
+        <?php endif; ?>
         <!-- Email -->
         <div class="form-control">
           <label class="label" for="signup-email">
@@ -85,11 +91,6 @@ $error = $_GET["error"] ?? "";
   </div>
 
   <script src="../../public/assets/js/app.js"></script>
-  <?php if ($error === "exists") : ?>
-    <script>
-      alert("Account already exists.");
-    </script>
-  <?php endif; ?>
 </body>
 
 </html>

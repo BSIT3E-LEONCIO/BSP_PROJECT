@@ -46,6 +46,31 @@ $error = $_GET["error"] ?? "";
 
         <!-- Login Form -->
         <form id="login-form" method="post" action="../src/user/login_process.php" class="space-y-6">
+          <?php if ($error === "notfound") : ?>
+            <div class="alert alert-error shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+              <div class="text-sm">Account does not exist.</div>
+            </div>
+          <?php elseif ($error === "invalid") : ?>
+            <div class="alert alert-error shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+              <div class="text-sm">Incorrect password.</div>
+            </div>
+          <?php elseif ($error === "blocked") : ?>
+            <?php
+              $reason = $_GET["reason"] ?? "Account blocked.";
+              $start = $_GET["start"] ?? null;
+              $end = $_GET["end"] ?? null;
+              $message = $reason;
+              if ($start && $end) {
+                $message .= "\nBlocked from: " . date("M d, Y H:i", (int)$start) . " to " . date("M d, Y H:i", (int)$end);
+              }
+            ?>
+            <div class="alert alert-error shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+              <div class="text-sm"><?php echo nl2br(htmlspecialchars($message)); ?></div>
+            </div>
+          <?php endif; ?>
           <!-- Username Field -->
           <div class="form-control">
             <label class="label" for="login-username">
@@ -102,25 +127,6 @@ $error = $_GET["error"] ?? "";
   </div>
 
   <script src="js/app.js"></script>
-  <?php if ($error === "notfound") : ?>
-    <script>
-      alert("Account does not exist.");
-    </script>
-  <?php elseif ($error === "invalid") : ?>
-    <script>
-      alert("Incorrect password.");
-    </script>
-  <?php elseif ($error === "blocked") : ?>
-    <script>
-      const reason = <?php echo json_encode($_GET["reason"] ?? "Blocked by administrator."); ?>;
-      const start = <?php echo json_encode($_GET["start"] ?? ""); ?>;
-      const end = <?php echo json_encode($_GET["end"] ?? ""); ?>;
-      let message = "Your account is temporarily blocked.";
-      if (reason) message += "\nReason: " + reason;
-      if (start && end) message += "\nBlocked: " + start + " to " + end;
-      alert(message);
-    </script>
-  <?php endif; ?>
 </body>
 
 </html>

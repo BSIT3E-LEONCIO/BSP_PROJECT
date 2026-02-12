@@ -39,6 +39,17 @@ $error = $_GET["error"] ?? "";
         <span class="badge badge-success px-3 py-1 text-xs font-semibold">ADMINISTRATOR</span>
       </div>
 
+      <?php if ($error === "notfound") : ?>
+        <div class="alert alert-error shadow-lg mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+          <span>Admin account not found.</span>
+        </div>
+      <?php elseif ($error === "invalid") : ?>
+        <div class="alert alert-error shadow-lg mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728" /></svg>
+          <span>Incorrect password.</span>
+        </div>
+      <?php endif; ?>
       <form class="space-y-3" method="post" action="../src/admin/admin_login_process.php">
         <!-- Username -->
         <div class="form-control">
@@ -91,26 +102,7 @@ $error = $_GET["error"] ?? "";
 
     </div>
 
-    <!-- Error Messages -->
-    <?php if ($error === "notfound") : ?>
-      <div class="toast toast-end">
-        <div class="alert alert-error">
-          <span>Admin account not found.</span>
-        </div>
-      </div>
-      <script>
-        setTimeout(() => document.querySelector('.toast').remove(), 4000);
-      </script>
-    <?php elseif ($error === "invalid") : ?>
-      <div class="toast toast-end">
-        <div class="alert alert-error">
-          <span>Incorrect password.</span>
-        </div>
-      </div>
-      <script>
-        setTimeout(() => document.querySelector('.toast').remove(), 4000);
-      </script>
-    <?php endif; ?>
+    <!-- Error Messages moved above form for visibility -->
 </body>
 
 </html>
